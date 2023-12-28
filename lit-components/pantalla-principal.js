@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import  styles  from "./my-element-styles";
+import  styles  from "./pantalla-principal-styles";
 
 export class PantallaPrincipal extends LitElement {
    
