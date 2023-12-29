@@ -12,15 +12,14 @@ export class PantallaPrincipal extends LitElement {
             name: { type: String },
         };
     }
+
     constructor(){
         super();
         this.name = 'Luis'
     }
 
     render() {
-        return html`<p>Hello, ${this.name}!</p>`
-
-
+        return html``;
     }
 }
 customElements.define('pantalla-principal', PantallaPrincipal);
