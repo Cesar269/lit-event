@@ -1,12 +1,13 @@
 import { LitElement, html, css } from 'lit';
 import {styles} from "../lit-components/formulario-styles";
 
-class Formulario extends LitElement {
+export default class Formulario extends LitElement {
     static styles=[
         styles
     ]
 
   static properties = {
+    eventData: { type: Array },
     eventName: { type: String },
     eventDate: { type: String },
     eventTime: { type: String },
@@ -15,6 +16,7 @@ class Formulario extends LitElement {
 
   constructor() {
     super();
+    this.eventData = [];
     this.eventName = '';
     this.eventDate = '';
     this.eventTime = '';
@@ -46,9 +48,13 @@ class Formulario extends LitElement {
             <textarea .value=${this.eventDescription} @input=${this._handleDescriptionChange} required></textarea>
           </label>
           <br />
-          <button type="submit">Guardar</button>
+          <button @click=${this._displayEventData}>Guardar</button>
         </form>
+        <div id="displayData">
+        <!-- Aquí se mostrarán los datos ingresados -->
       </div>
+      </div>
+      
     `;
   }
 
@@ -68,16 +74,36 @@ class Formulario extends LitElement {
     this.eventDescription = e.target.value;
   }
 
-  _handleSubmit(e) {
-    e.preventDefault();
-    console.log({
-      eventName: this.eventName,
-      eventDate: this.eventDate,
-      eventTime: this.eventTime,
-      eventDescription: this.eventDescription,
+  _displayEventData() {
+    // Agregar el conjunto actual de datos a eventData como un objeto
+      this.eventData.push({
+      name: this.eventName,
+      date: this.eventDate,
+      time: this.eventTime,
+      description: this.eventDescription
     });
-    // Aquí puedes agregar la lógica para enviar los datos a tu servidor o manejarlos según necesites.
-  }
+    console.log(this.eventData)
+
+    const displayDataDiv = this.shadowRoot.getElementById('displayData');
+    
+    // Mostrar todos los conjuntos de datos almacenados en eventData
+    let displayContent = '';
+    this.eventData.forEach(data => {
+      displayContent += `
+        <p>
+          Nombre del evento: ${data.name}<br>
+          Fecha: ${data.date}<br>
+          Hora: ${data.time}<br>
+          Descripción: ${data.description}
+        </p>
+        <hr>
+      `;
+    });
+
+    displayDataDiv.innerHTML = displayContent;
+  }  
+  
+
 }
 
 customElements.define('evento-formulario', Formulario);

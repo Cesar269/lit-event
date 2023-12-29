@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import styles from "./pantalla-principal-styles";
 
+
 export class PantallaPrincipal extends LitElement {
 
     static styles = [
@@ -9,6 +10,7 @@ export class PantallaPrincipal extends LitElement {
 
     static get properties() {
         return {
+            
             name: { type: String },
         };
     }
@@ -17,6 +19,14 @@ export class PantallaPrincipal extends LitElement {
         super();
         this.name = 'Luis'
     }
+
+    _openComponenteFormulario() {
+    import('../lit-components/formulario.js').then(module => {
+      const Formulario = module.default;
+      const componenteFormulario = new Formulario();
+      this.shadowRoot.getElementById('ComponenteFormularioContainer').appendChild(componenteFormulario);
+    });
+  }
 
     render() {
         return html`
@@ -27,7 +37,9 @@ export class PantallaPrincipal extends LitElement {
                 de Lit element por parte de Softek.
             </p>
         </nav>
-        <button type="button"><strong>+</strong> Agendar nuevo evento</button>
+        <button @click=${this._openComponenteFormulario}><strong>+</strong> Agendar nuevo evento</button>
+        <span>&nbsp;&nbsp;</span>
+        <div id="ComponenteFormularioContainer"></div>
         <section class="eventos">
             <div class="item-evento">
                 <p>Un evento de un día festivo</p>

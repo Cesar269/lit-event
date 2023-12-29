@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const styles = css`
   .container {
+    margin-top: 20px;
     max-width: 400px;
     margin: auto;
     padding: 20px;
@@ -20,7 +21,7 @@ export const styles = css`
     margin-bottom: 10px;
     color: #555;
   }
-
+  
   input[type="text"],
   input[type="date"],
   input[type="time"],
