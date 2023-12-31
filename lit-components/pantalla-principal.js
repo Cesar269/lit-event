@@ -17,7 +17,7 @@ export class PantallaPrincipal extends LitElement {
 
     constructor() {
         super();
-        this.name = 'Luis'
+        this.name = 'Cesar'
     }
 
     _openComponenteFormulario() {
