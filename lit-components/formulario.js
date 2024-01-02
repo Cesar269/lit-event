@@ -30,78 +30,50 @@ export default class Formulario extends LitElement {
         <form @submit=${this._handleSubmit}>
           <label>
             Nombre del evento:
-            <input type="text" .value=${this.eventName} @input=${this._handleNameChange} required />
+            <input type="text" placeholder="Nombre del evento" id="eventName" required />
           </label>
           <br />
           <label>
             Fecha:
-            <input type="date" .value=${this.eventDate} @input=${this._handleDateChange} required />
+            <input type="date" id="eventDate" required />
           </label>
           <br />
           <label>
             Hora:
-            <input type="time" .value=${this.eventTime} @input=${this._handleTimeChange} required />
+            <input type="time" id="eventTime" required />
           </label>
           <br />
           <label>
             Descripción:
-            <textarea .value=${this.eventDescription} @input=${this._handleDescriptionChange} required></textarea>
+            <textarea id="eventDescription" required></textarea>
           </label>
           <br />
-          <button @click=${this._displayEventData}>Guardar</button>
+          <button @click=${this._handleSubmit}>Guardar</button>
         </form>
-        <div id="displayData">
-        <!-- Aquí se mostrarán los datos ingresados -->
-      </div>
       </div>
       
     `;
   }
 
-  _handleNameChange(e) {
-    this.eventName = e.target.value;
+    _handleSubmit(e) {
+    e.preventDefault();
+    this.requestUpdate();
+
+    const eventName = this.shadowRoot.getElementById('eventName').value;
+    const eventDate = this.shadowRoot.getElementById('eventDate').value;
+    const eventTime = this.shadowRoot.getElementById('eventTime').value;
+    const eventDescription = this.shadowRoot.getElementById('eventDescription').value;
+
+    // Disparar un evento personalizado con los detalles del evento
+    this.dispatchEvent(new CustomEvent('save-event-data', {
+      detail: {
+        name: eventName,
+        date: eventDate,
+        time: eventTime,
+        description: eventDescription
+      }
+    }));
   }
-
-  _handleDateChange(e) {
-    this.eventDate = e.target.value;
-  }
-
-  _handleTimeChange(e) {
-    this.eventTime = e.target.value;
-  }
-
-  _handleDescriptionChange(e) {
-    this.eventDescription = e.target.value;
-  }
-
-  _displayEventData() {
-    // Agregar el conjunto actual de datos a eventData como un objeto
-      this.eventData.push({
-      name: this.eventName,
-      date: this.eventDate,
-      time: this.eventTime,
-      description: this.eventDescription
-    });
-    console.log(this.eventData)
-
-    const displayDataDiv = this.shadowRoot.getElementById('displayData');
-    
-    // Mostrar todos los conjuntos de datos almacenados en eventData
-    let displayContent = '';
-    this.eventData.forEach(data => {
-      displayContent += `
-        <p>
-          Nombre del evento: ${data.name}<br>
-          Fecha: ${data.date}<br>
-          Hora: ${data.time}<br>
-          Descripción: ${data.description}
-        </p>
-        <hr>
-      `;
-    });
-
-    displayDataDiv.innerHTML = displayContent;
-  }  
   
 
 }

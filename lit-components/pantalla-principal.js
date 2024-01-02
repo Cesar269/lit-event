@@ -1,7 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import styles from "./pantalla-principal-styles";
 
-
 export class PantallaPrincipal extends LitElement {
 
     static styles = [
@@ -10,14 +9,28 @@ export class PantallaPrincipal extends LitElement {
 
     static get properties() {
         return {
-            
-            name: { type: String },
+            eventData: { type: Object },
         };
     }
 
     constructor() {
         super();
-        this.name = 'Luis'
+        this.eventData = {};
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener('save-event-data', this._handleSaveEventData);
+      }
+    
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener('save-event-data', this._handleSaveEventData);
+      }
+    
+      _handleSaveEventData(e) {
+        this.eventData = e.detail;
+        this.requestUpdate();  // Esto hará que el componente se vuelva a renderizar con los nuevos datos
+        console.log(this.eventData);
     }
 
     _openComponenteFormulario() {
@@ -42,8 +55,11 @@ export class PantallaPrincipal extends LitElement {
         <div id="ComponenteFormularioContainer"></div>
         <section class="eventos">
             <div class="item-evento">
-                <p>Un evento de un día festivo</p>
-                <p>24 de febrero de 2023 a las 12:30 hrs.</p>
+            <h2>Detalles del último evento guardado:</h2>
+            <p>Nombre: ${this.eventData.name || 'N/A'}</p>
+            <p>Fecha: ${this.eventData.date || 'N/A'}</p>
+            <p>Hora: ${this.eventData.time || 'N/A'}</p>
+            <p>Descripción: ${this.eventData.description || 'N/A'}</p>
             </div>
         </section>
         <h4 class="eliminar-eventos">Eliminar todos los eventos</h4>
