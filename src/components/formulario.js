@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import {styles} from "../lit-components/formulario-styles";
+import {styles} from "../styles/formulario-styles";
 
 export default class Formulario extends LitElement {
     static styles=[
