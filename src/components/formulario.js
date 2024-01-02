@@ -57,7 +57,6 @@ export default class Formulario extends LitElement {
 
     _handleSubmit(e) {
     e.preventDefault();
-    this.requestUpdate();
 
     const eventName = this.shadowRoot.getElementById('eventName').value;
     const eventDate = this.shadowRoot.getElementById('eventDate').value;
@@ -71,7 +70,9 @@ export default class Formulario extends LitElement {
         date: eventDate,
         time: eventTime,
         description: eventDescription
-      }
+      },
+      bubbles: true,
+      composed: true
     }));
   }
   
