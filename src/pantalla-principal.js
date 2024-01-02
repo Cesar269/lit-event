@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
-import styles from "./pantalla-principal-styles";
-
+import styles from "./styles/pantalla-principal-styles";
+import "./components/modal-form.js";
 
 export class PantallaPrincipal extends LitElement {
 
@@ -10,26 +10,21 @@ export class PantallaPrincipal extends LitElement {
 
     static get properties() {
         return {
-            
-            name: { type: String },
+
         };
     }
 
     constructor() {
         super();
-        this.name = 'Cesar'
+        this.addEventListener('display-modal', e => {
+            const modal = this.shadowRoot.querySelector('modal-form');
+            modal.open = true;
+        });
     }
-
-    _openComponenteFormulario() {
-    import('../lit-components/formulario.js').then(module => {
-      const Formulario = module.default;
-      const componenteFormulario = new Formulario();
-      this.shadowRoot.getElementById('ComponenteFormularioContainer').appendChild(componenteFormulario);
-    });
-  }
 
     render() {
         return html`
+        <modal-form></modal-form>
         <nav>
             <h1>Gestor de eventos</h1>
             <p>
@@ -37,9 +32,7 @@ export class PantallaPrincipal extends LitElement {
                 de Lit element por parte de Softek.
             </p>
         </nav>
-        <button @click=${this._openComponenteFormulario}><strong>+</strong> Agendar nuevo evento</button>
-        <span>&nbsp;&nbsp;</span>
-        <div id="ComponenteFormularioContainer"></div>
+        <button @click="${this._openForm}"><strong>+</strong> Agendar nuevo evento</button>
         <section class="eventos">
             <div class="item-evento">
                 <p>Un evento de un día festivo</p>
@@ -49,5 +42,13 @@ export class PantallaPrincipal extends LitElement {
         <h4 class="eliminar-eventos">Eliminar todos los eventos</h4>
         `;
     }
+
+    _openForm(e) {
+        console.log("apoco si?")
+        this.dispatchEvent(new CustomEvent('display-modal'));
+    }
+
 }
+
+
 customElements.define('pantalla-principal', PantallaPrincipal);
