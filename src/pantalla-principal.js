@@ -1,25 +1,51 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import styles from "./styles/pantalla-principal-styles";
-import "./components/modal-form.js";
+import ModalForm from "./components/modal-form.js";
 
 export class PantallaPrincipal extends LitElement {
 
-    static styles = [
-        styles
-    ]
+    static styles = [ styles ]
 
     static get properties() {
         return {
+            ModalForm,
+            events: { type: Array}
         };
     }
 
     constructor() {
         super();
+        this.events=[];
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener('save-event-data', this._handleSaveEventData);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener('save-event-data', this._handleSaveEventData);
+    }
+
+    update(changed) {
+        super.update(changed);
+        this._openModal();
+    }
+
+    _handleSaveEventData(e) {
+        const newEvent = e.detail;
+        this.events = [...this.events, newEvent];// Agregar el nuevo evento al array de eventos
+        this.requestUpdate();  // Esto hará que el componente se vuelva a renderizar con los nuevos datos
+    }
+
+    _openModal(){
         this.addEventListener('display-modal', e => {
             const modal = this.shadowRoot.querySelector('modal-form');
             modal.open = true;
         });
     }
+    
+    _openForm() { this.dispatchEvent(new CustomEvent('display-modal')); }
 
     render() {
         return html`
@@ -34,19 +60,13 @@ export class PantallaPrincipal extends LitElement {
         <button @click="${this._openForm}"><strong>+</strong> Agendar nuevo evento</button>
         <section class="eventos">
             <div class="item-evento">
-                <p>Un evento de un día festivo</p>
-                <p>24 de febrero de 2023 a las 12:30 hrs.</p>
+            ${this.events.map(event => html`<li>${event.name} - ${event.date} - ${event.time} - ${event.description}</li>`)}
             </div>
         </section>
-        <h4 class="eliminar-eventos">Eliminar todos los eventos</h4>
+        ${console.log("Revisar la linea de abajo")}
+        ${this.events.lenght  ? html `<h4 class="eliminar-eventos">Eliminar todos los eventos</h4>` : html `<h4 class="eliminar-eventos">Eliminar todos los eventos</h4>` }
         `;
     }
-
-    _openForm(e) {
-        console.log("apoco si?")
-        this.dispatchEvent(new CustomEvent('display-modal'));
-    }
-
 }
 
 

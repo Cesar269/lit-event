@@ -2,15 +2,11 @@ import { LitElement, html } from "lit";
 import { classMap } from 'lit/directives/class-map.js';
 import stylesForm from "../styles/modalForm-styles"
 
-class modalForm extends LitElement {
-    static styles = [
-        stylesForm
-    ]
+export default class ModalForm extends LitElement {
+    static styles = [ stylesForm ]
 
     static get properties() {
-        return {
-            open: { type: Boolean }
-        }
+        return { open: { type: Boolean } }
     }
 
     constructor() {
@@ -30,26 +26,25 @@ class modalForm extends LitElement {
                         <form @submit=${this._handleSubmit}>
                             <label>
                                 Nombre del evento:
-                                <input type="text" .value=${this.eventName} @input=${this._handleNameChange} required />
+                                <input type="text" placeholder="Nombre del evento" id="eventName" required />
                             </label>
                             <br />
                             <label>
                                 Fecha:
-                                <input type="date" .value=${this.eventDate} @input=${this._handleDateChange} required />
+                                <input type="date" id="eventDate" required />
                             </label>
                             <br />
                             <label>
                                 Hora:
-                                <input type="time" .value=${this.eventTime} @input=${this._handleTimeChange} required />
+                                <input type="time" id="eventTime" required />
                             </label>
                             <br />
                             <label>
                                 Descripción:
-                                <textarea .value=${this.eventDescription} @input=${this._handleDescriptionChange}
-                                    required></textarea>
+                                <textarea id="eventDescription" required></textarea>
                             </label>
                             <br />
-                            <button @click=${this._displayEventData}>Guardar</button>
+                            <button @click=${this._handleSubmit}>Guardar</button>
                         </form>
                     </div>
                 </div>
@@ -58,12 +53,29 @@ class modalForm extends LitElement {
         `
     }
 
-    close(){
-        this.open = false;
+    close(){ this.open = false; }
+
+    _handleSubmit(e) {
+        console.log("click evento", e)
+        e.preventDefault();
+    
+        const eventName = this.shadowRoot.getElementById('eventName').value;
+        const eventDate = this.shadowRoot.getElementById('eventDate').value;
+        const eventTime = this.shadowRoot.getElementById('eventTime').value;
+        const eventDescription = this.shadowRoot.getElementById('eventDescription').value;
+    
+        // Disparar un evento personalizado con los detalles del evento
+        this.dispatchEvent(new CustomEvent('save-event-data', {
+          detail: {
+            name: eventName,
+            date: eventDate,
+            time: eventTime,
+            description: eventDescription
+          },
+          bubbles: true,
+          composed: true
+        }));
     }
-
-
-
 }
 
-customElements.define('modal-form', modalForm);
+customElements.define('modal-form', ModalForm);
