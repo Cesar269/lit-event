@@ -39,7 +39,7 @@ export default css `
 
         .item-evento{
             background-color: rgba(219, 219, 219, 0.35);
-            border-radius: 20px;
+            border-radius: 30px;
             display: block;
             justify-content: center;
             margin-top: 10px;  
@@ -47,5 +47,17 @@ export default css `
     
         .eliminar-eventos{
             cursor:pointer;
+        }
+
+        #deleteButton {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
 `

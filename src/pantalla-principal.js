@@ -47,6 +47,8 @@ export class PantallaPrincipal extends LitElement {
     
     _openForm() { this.dispatchEvent(new CustomEvent('display-modal')); }
 
+    _deteleEvents(){this.events=[]}
+
     render() {
         return html`
         <modal-form></modal-form>
@@ -62,7 +64,7 @@ export class PantallaPrincipal extends LitElement {
             ${this.events.map(event => html`<div class="item-evento"><ul><li>${event.name} - ${event.date} - ${event.time} - ${event.description}</li></ul></div>`)}  
         </section>
         ${console.log("Revisar la linea de abajo")}
-        ${this.events.lenght  ? html `<h4 class="eliminar-eventos">Eliminar todos los eventos</h4>` : html `<h4 class="eliminar-eventos">Eliminar todos los eventos</h4>` }
+        ${this.events.length>0  ? html `<button id="deleteButton" @click="${this._deteleEvents}"> Eliminar todos los eventos </button>` : nothing }
         `;
     }
 }
