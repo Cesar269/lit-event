@@ -6,6 +6,10 @@ export default css `
             text-align: center;
         }
 
+        ul {
+            list-style-type: none; /* Elimina los puntos por defecto */
+          }
+
         button{
             background-color: rgb(216, 216, 216);
             padding: 0.4rem 0.8rem;
@@ -13,7 +17,7 @@ export default css `
             border-radius: 4px;
             box-shadow: 2px 2px 3px rgba(128, 128, 128, 0.678);
             cursor: pointer;
-            display:block;
+            display: block;
             margin:auto;
         }
 
@@ -27,6 +31,7 @@ export default css `
         }
 
         .eventos{
+            flex-direction: column;
             display: flex;
             justify-content: center;
             margin-top: 2rem;
@@ -34,12 +39,10 @@ export default css `
 
         .item-evento{
             background-color: rgba(219, 219, 219, 0.35);
-            width: 60%;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            padding: 0.2rem 1.5rem;   
-
+            border-radius: 20px;
+            display: block;
+            justify-content: center;
+            margin-top: 10px;  
         }
     
         .eliminar-eventos{

@@ -14,6 +14,31 @@ export default class ModalForm extends LitElement {
         this.open = false
     }
 
+    close(){ this.open = false; }
+
+    _handleSubmit(e) {
+        console.log("click evento", e)
+        e.preventDefault();
+        this.close();
+    
+        const eventName = this.shadowRoot.getElementById('eventName').value;
+        const eventDate = this.shadowRoot.getElementById('eventDate').value;
+        const eventTime = this.shadowRoot.getElementById('eventTime').value;
+        const eventDescription = this.shadowRoot.getElementById('eventDescription').value;
+    
+        // Disparar un evento personalizado con los detalles del 
+        this.dispatchEvent(new CustomEvent('save-event-data', {
+          detail: {
+            name: eventName,
+            date: eventDate,
+            time: eventTime,
+            description: eventDescription
+          },
+          bubbles: true,
+          composed: true
+        }));
+    }
+
     render() {
         return html`
         <div class="${classMap({ wrapper: true, open: this.open })}">
@@ -51,30 +76,6 @@ export default class ModalForm extends LitElement {
             </div>
         </div>
         `
-    }
-
-    close(){ this.open = false; }
-
-    _handleSubmit(e) {
-        console.log("click evento", e)
-        e.preventDefault();
-    
-        const eventName = this.shadowRoot.getElementById('eventName').value;
-        const eventDate = this.shadowRoot.getElementById('eventDate').value;
-        const eventTime = this.shadowRoot.getElementById('eventTime').value;
-        const eventDescription = this.shadowRoot.getElementById('eventDescription').value;
-    
-        // Disparar un evento personalizado con los detalles del evento
-        this.dispatchEvent(new CustomEvent('save-event-data', {
-          detail: {
-            name: eventName,
-            date: eventDate,
-            time: eventTime,
-            description: eventDescription
-          },
-          bubbles: true,
-          composed: true
-        }));
     }
 }
 

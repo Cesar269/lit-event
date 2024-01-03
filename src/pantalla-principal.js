@@ -59,9 +59,7 @@ export class PantallaPrincipal extends LitElement {
         </nav>
         <button @click="${this._openForm}"><strong>+</strong> Agendar nuevo evento</button>
         <section class="eventos">
-            <div class="item-evento">
-            ${this.events.map(event => html`<li>${event.name} - ${event.date} - ${event.time} - ${event.description}</li>`)}
-            </div>
+            ${this.events.map(event => html`<div class="item-evento"><ul><li>${event.name} - ${event.date} - ${event.time} - ${event.description}</li></ul></div>`)}  
         </section>
         ${console.log("Revisar la linea de abajo")}
         ${this.events.lenght  ? html `<h4 class="eliminar-eventos">Eliminar todos los eventos</h4>` : html `<h4 class="eliminar-eventos">Eliminar todos los eventos</h4>` }
