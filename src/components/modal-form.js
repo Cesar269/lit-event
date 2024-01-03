@@ -6,38 +6,64 @@ export default class ModalForm extends LitElement {
     static styles = [ stylesForm ]
 
     static get properties() {
-        return { open: { type: Boolean } }
+        return {
+            open: { type: Boolean,
+            eventName: { type: String },
+            eventDate: { type: String },
+            eventTime: { type: String },
+            eventDescription: { type: String },
+            } }
     }
 
     constructor() {
         super();
         this.open = false
+        this.eventName = '';
+        this.eventDate = '';
+        this.eventTime = '';
+        this.eventDescription = '';
     }
 
-    close(){ this.open = false; }
+    close(){ this.open = !this.open; }
 
     _handleSubmit(e) {
-        console.log("click evento", e)
         e.preventDefault();
         this.close();
+        const eventData = {
+          name: this.eventName,
+          date: this.eventDate,
+          time: this.eventTime,
+          description: this.eventDescription
+        };
     
-        const eventName = this.shadowRoot.getElementById('eventName').value;
-        const eventDate = this.shadowRoot.getElementById('eventDate').value;
-        const eventTime = this.shadowRoot.getElementById('eventTime').value;
-        const eventDescription = this.shadowRoot.getElementById('eventDescription').value;
-    
-        // Disparar un evento personalizado con los detalles del 
         this.dispatchEvent(new CustomEvent('save-event-data', {
-          detail: {
-            name: eventName,
-            date: eventDate,
-            time: eventTime,
-            description: eventDescription
-          },
+          detail: eventData,
           bubbles: true,
           composed: true
-        }));
-    }
+        }
+        ));
+    
+        // Limpia los valores guardados
+        this.eventName = '';
+        this.eventDate = '';
+        this.eventTime = '';
+        this.eventDescription = '';
+
+        // Limpia los valores del input
+        this.shadowRoot.getElementById('valueName').value="";
+        this.shadowRoot.getElementById('valueDate').value="";
+        this.shadowRoot.getElementById('valueTime').value="";
+        this.shadowRoot.getElementById('valueDescription').value="";
+      }
+    
+
+    _handleNameInput(e) { this.eventName = e.target.value; }
+    
+    _handleDateInput(e) { this.eventDate = e.target.value; }
+    
+    _handleTimeInput(e) { this.eventTime = e.target.value; }
+    
+    _handleDescriptionInput(e) { this.eventDescription = e.target.value; }
 
     render() {
         return html`
@@ -51,22 +77,22 @@ export default class ModalForm extends LitElement {
                         <form @submit=${this._handleSubmit}>
                             <label>
                                 Nombre del evento:
-                                <input type="text" placeholder="Nombre del evento" id="eventName" required />
+                                <input type="text" id="valueName" .value=${this.eventName} @input=${this._handleNameInput} placeholder="Nombre del evento" required />
                             </label>
                             <br />
                             <label>
                                 Fecha:
-                                <input type="date" id="eventDate" required />
+                                <input type="date" id="valueDate" .value=${this.eventDate} @input=${this._handleDateInput} required />
                             </label>
                             <br />
                             <label>
                                 Hora:
-                                <input type="time" id="eventTime" required />
+                                <input type="time" id="valueTime" .value=${this.eventTime} @input=${this._handleTimeInput} required />
                             </label>
                             <br />
                             <label>
                                 Descripción:
-                                <textarea id="eventDescription" required></textarea>
+                                <textarea id="valueDescription" .value=${this.eventDescription} @input=${this._handleDescriptionInput} required></textarea>
                             </label>
                             <br />
                             <button @click=${this._handleSubmit}>Guardar</button>

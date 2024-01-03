@@ -63,7 +63,6 @@ export class PantallaPrincipal extends LitElement {
         <section class="eventos">
             ${this.events.map(event => html`<div class="item-evento"><ul><li>${event.name} - ${event.date} - ${event.time} - ${event.description}</li></ul></div>`)}  
         </section>
-        ${console.log("Revisar la linea de abajo")}
         ${this.events.length>0  ? html `<button id="deleteButton" @click="${this._deteleEvents}"> Eliminar todos los eventos </button>` : nothing }
         `;
     }
