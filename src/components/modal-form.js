@@ -3,16 +3,18 @@ import { classMap } from 'lit/directives/class-map.js';
 import stylesForm from "../styles/modalForm-styles"
 
 export default class ModalForm extends LitElement {
-    static styles = [ stylesForm ]
+    static styles = [stylesForm]
 
     static get properties() {
         return {
-            open: { type: Boolean,
-            eventName: { type: String },
-            eventDate: { type: String },
-            eventTime: { type: String },
-            eventDescription: { type: String },
-            } }
+            open: {
+                type: Boolean,
+                eventName: { type: String },
+                eventDate: { type: String },
+                eventTime: { type: String },
+                eventDescription: { type: String },
+            }
+        }
     }
 
     constructor() {
@@ -24,45 +26,85 @@ export default class ModalForm extends LitElement {
         this.eventDescription = '';
     }
 
-    close(){ this.open = !this.open; }
+    close() { this.open = !this.open; }
 
     _handleSubmit(e) {
         e.preventDefault();
-        this.close();
         const eventData = {
-          name: this.eventName,
-          date: this.eventDate,
-          time: this.eventTime,
-          description: this.eventDescription
+            name: this.eventName,
+            date: this.eventDate,
+            time: this.eventTime,
+            description: this.eventDescription
         };
-    
-        this.dispatchEvent(new CustomEvent('save-event-data', {
-          detail: eventData,
-          bubbles: true,
-          composed: true
-        }
-        ));
-    
-        // Limpia los valores guardados
-        this.eventName = '';
-        this.eventDate = '';
-        this.eventTime = '';
-        this.eventDescription = '';
 
-        // Limpia los valores del input
-        this.shadowRoot.getElementById('valueName').value="";
-        this.shadowRoot.getElementById('valueDate').value="";
-        this.shadowRoot.getElementById('valueTime').value="";
-        this.shadowRoot.getElementById('valueDescription').value="";
-      }
-    
+        if (this.validarDatos(eventData)) {
+            this.close();
+            this.dispatchEvent(new CustomEvent('save-event-data', {
+                detail: eventData,
+                bubbles: true,
+                composed: true
+            }
+            ));
+
+            // Limpia los valores guardados
+            this.eventName = '';
+            this.eventDate = '';
+            this.eventTime = '';
+            this.eventDescription = '';
+
+            // Limpia los valores del input
+            this.shadowRoot.getElementById('valueName').value = "";
+            this.shadowRoot.getElementById('valueDate').value = "";
+            this.shadowRoot.getElementById('valueTime').value = "";
+            this.shadowRoot.getElementById('valueDescription').value = "";
+        }
+
+
+    }
+
+    validarDatos({ date, time,name,description }) {
+        console.log(date,time,name,description)
+        if(!date || !time || !name || !description){
+            console.log("campos vacios")
+            Swal.fire({
+                icon: "warning",
+                text: "Existen campos vacíos, favor de completar todos los campos",
+            });
+            return false;
+        }
+        const dateNow = new Date();
+        const hourNow = dateNow.getHours();
+        const minNow = dateNow.getMinutes();
+        const dateIn = new Date(date);
+        dateIn.setHours(0, 0, 0, 0);
+        dateNow.setHours(0, 0, 0, 0);
+        dateIn.setDate(dateIn.getDate() + 1)
+        console.log(dateNow)
+        console.log(dateIn)
+        const hourIn = parseInt(time.split(":")[0], 10);
+        const minIn = parseInt(time.split(":")[1], 10);
+
+        if (
+            dateIn > dateNow ||
+            (dateIn.getTime() === dateNow.getTime() && (hourIn > hourNow || (hourIn === hourNow && minIn > minNow)))
+        ) {
+            return true;
+        } else {
+            Swal.fire({
+                icon: "warning",
+                text: "La hora y fecha seleccionadas tienen que superar la hora y fecha actual",
+            });
+
+            return false;
+        }
+    }
 
     _handleNameInput(e) { this.eventName = e.target.value; }
-    
+
     _handleDateInput(e) { this.eventDate = e.target.value; }
-    
+
     _handleTimeInput(e) { this.eventTime = e.target.value; }
-    
+
     _handleDescriptionInput(e) { this.eventDescription = e.target.value; }
 
     render() {
@@ -103,6 +145,9 @@ export default class ModalForm extends LitElement {
         </div>
         `
     }
+
+
+
 }
 
 customElements.define('modal-form', ModalForm);

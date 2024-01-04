@@ -1,10 +1,10 @@
 import { LitElement, html, css } from 'lit';
-import {styles} from "../styles/formulario-styles";
+import { styles } from "../styles/formulario-styles";
 
 export default class Formulario extends LitElement {
-    static styles=[
-        styles
-    ]
+  static styles = [
+    styles
+  ]
 
   static properties = {
     eventData: { type: Array },
@@ -55,7 +55,7 @@ export default class Formulario extends LitElement {
     `;
   }
 
-    _handleSubmit(e) {
+  _handleSubmit(e) {
     e.preventDefault();
 
     const eventName = this.shadowRoot.getElementById('eventName').value;
@@ -75,9 +75,8 @@ export default class Formulario extends LitElement {
       composed: true
     }));
   }
-  
+
 
 }
 
 customElements.define('evento-formulario', Formulario);
-

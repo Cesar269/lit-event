@@ -1,6 +1,6 @@
 import { css } from "lit";
 
-export default css `
+export default css`
         :host{
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             text-align: center;
@@ -8,11 +8,17 @@ export default css `
 
         ul {
             list-style-type: none; /* Elimina los puntos por defecto */
-          }
+            padding: 0;
+            margin: 0rem 0.7rem; 
+        }
 
+        .texto-presentacion{
+            padding: 0rem 2rem;
+        }
+        
         button{
             background-color: rgb(216, 216, 216);
-            padding: 0.4rem 0.8rem;
+            padding: 0.5rem 1rem;
             border: none;
             border-radius: 4px;
             box-shadow: 2px 2px 3px rgba(128, 128, 128, 0.678);
@@ -22,7 +28,7 @@ export default css `
         }
 
         button:active{
-            border: solid 1px rgb(186, 186, 186);
+            border: solid inset 1px rgb(186, 186, 186);
             box-shadow: 3px 3px 3px rgba(128, 128, 128, 0.922);
         }
 
@@ -35,14 +41,20 @@ export default css `
             display: flex;
             justify-content: center;
             margin-top: 2rem;
+            padding: 0rem 4rem;
         }
 
         .item-evento{
             background-color: rgba(219, 219, 219, 0.35);
-            border-radius: 30px;
-            display: block;
+            border-radius: 5px;
             justify-content: center;
+            padding: 0rem 1rem;
             margin-top: 10px;  
+        }
+
+        .detalles-evento{
+            display:flex;
+            justify-content: space-between;
         }
     
         .eliminar-eventos{
@@ -51,13 +63,14 @@ export default css `
 
         #deleteButton {
             margin-top: 20px;
-            background-color: #007bff;
+            background-color: #bf0101;
             color: white;
-            padding: 10px 20px;
+            padding: 0.5rem 1rem;
             border: 5px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
+            box-shadow: none;
         }
 `
