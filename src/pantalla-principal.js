@@ -62,6 +62,8 @@ export class PantallaPrincipal extends LitElement {
     _convertirFechaHora({fecha,hora}) {
         // Crear objetos Date para la fecha y la hora
         const fechaObj = new Date(fecha);
+        fechaObj.setHours(0,0,0,0);
+        fechaObj.setDate(fechaObj.getDate() + 1)
 
         // Obtener partes de la fecha
         const dia = fechaObj.getDate();
